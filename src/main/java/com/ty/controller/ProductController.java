@@ -25,37 +25,44 @@ import com.ty.service.ProductService;
 public class ProductController {
 	@Autowired
 	private ProductService productService;
-
+         // create a new product operations
 	@PostMapping("/products")
 	public ResponseEntity<ResponseStructure<Products>> createProduct(@RequestBody Products product) {
 		return productService.createProduct(product);
 	}
-
+	
+        // Getting product by passing Id operations
 	@GetMapping("/products/{pid}")
 	public ResponseEntity<ResponseStructure<Products>> getProductById(
 			@PathVariable Integer pid) {
-		return productService.getProductById(pid);
-	}
+		return productService.getProductById(pid); //// Call service to fetch product by pid
 
+	}
+       // Getting all products
 	@GetMapping("/products")
 	public ResponseEntity<ResponseStructure<Page<Products>>> getAllProducts(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size) { 
+			@RequestParam(defaultValue = "10") int size) // Default to 10 items per page
+	{ 
 
 		Pageable pageable = PageRequest.of(page, size); 
 		return productService.getAllProducts(pageable); 
 	}
-
+	
+        //update products by id operations
 	@PutMapping("/products/{pid}")
 	public ResponseEntity<ResponseStructure<Products>> updateProduct(@PathVariable Integer pid, 
 																								
-			@RequestBody Products product 
+			@RequestBody Products product //// Get the updated product details from the request body
+
 	) {
-		return productService.updateProduct(pid, product); 
+		return productService.updateProduct(pid, product);  // Call the service method to update the product
+
 	}
 
+	// Delete product by id operations
 	@DeleteMapping("/products/{pid}")
 	public ResponseEntity<ResponseStructure<String>> deleteProduct(@PathVariable Integer pid) {
-		return productService.deleteProduct(pid); 
+		return productService.deleteProduct(pid); // Call the service method to delete the product
 	}
 
 }
