@@ -25,7 +25,7 @@ public class ProductService {
 	public ResponseEntity<ResponseStructure<Products>> createProduct(Products product) {
 		ResponseStructure<Products> rs = new ResponseStructure<>();
 
-		// Validate the input
+		// Validate the user input
 		if (product.getName() == null || product.getName().isEmpty()) {
 			rs.setStatusCode(HttpStatus.BAD_REQUEST.value());
 			rs.setMessage("Product name cannot be null or empty");
@@ -59,7 +59,7 @@ public class ProductService {
 		// Set the category to the product
 		product.setCategory(category);
 
-		// Save the product
+		// Save 
 		Products savedProduct = productRepository.save(product);
 
 		// Prepare the response
@@ -73,7 +73,7 @@ public class ProductService {
 	public ResponseEntity<ResponseStructure<Products>> getProductById(Integer pid) {
 		ResponseStructure<Products> rs = new ResponseStructure<>();
 
-		// Find the product by pid
+		// Find the product by using pid
 		Products product = productRepository.findById(pid).orElse(null);
 
 		if (product == null) {
@@ -94,7 +94,7 @@ public class ProductService {
 	public ResponseEntity<ResponseStructure<Page<Products>>> getAllProducts(Pageable pageable) {
 		ResponseStructure<Page<Products>> rs = new ResponseStructure<>();
 
-		// Get paginated products from the repository
+		// Get paginated products from the repository and call findall method
 		Page<Products> productPage = productRepository.findAll(pageable);
 
 		if (productPage.isEmpty()) {
@@ -104,7 +104,7 @@ public class ProductService {
 			return new ResponseEntity<>(rs, HttpStatus.NO_CONTENT);
 		}
 
-		// Prepare the response structure with paginated products
+		// Prepare the response structure 
 		rs.setStatusCode(HttpStatus.OK.value());
 		rs.setMessage("Products fetched successfully");
 		rs.setData(productPage);
@@ -115,18 +115,18 @@ public class ProductService {
 	public ResponseEntity<ResponseStructure<Products>> updateProduct(Integer pid, Products updatedProduct) {
 		ResponseStructure<Products> response = new ResponseStructure<>();
 
-		// Find the existing product by its pid
+		// Find the existing product by  pid
 		Products existingProduct = productRepository.findById(pid).orElse(null);
 
 		if (existingProduct == null) {
-			// If product does not exist, return an error response
+			// If product not exist, then return error response
 			response.setStatusCode(HttpStatus.NOT_FOUND.value());
 			response.setMessage("Product not found");
 			response.setData(null);
 			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 
-		
+		//Fetch the category by its CID
 		Category category = categoryRepository.findById(updatedProduct.getCategory().getCid()).orElse(null);
 
 		if (category == null) {
@@ -136,7 +136,7 @@ public class ProductService {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 
-		// Update the existing product fields with the new data
+		// Update existing product with the new data
 		existingProduct.setName(updatedProduct.getName());
 		existingProduct.setDescription(updatedProduct.getDescription());
 		existingProduct.setPrice(updatedProduct.getPrice());
@@ -144,9 +144,8 @@ public class ProductService {
 		existingProduct.setCategory(updatedProduct.getCategory()); 
 		existingProduct.setCategory(category);
 		
-		Products savedProduct = productRepository.save(existingProduct);
-
-		
+		// Save the updated product
+		Products savedProduct = productRepository.save(existingProduct);		
 		response.setStatusCode(HttpStatus.OK.value());
 		response.setMessage("Product updated successfully");
 		response.setData(savedProduct);
@@ -171,7 +170,7 @@ public class ProductService {
 		// Delete the product
 		productRepository.delete(product);
 
-		// Prepare the success response
+		// Prepare response
 		response.setStatusCode(HttpStatus.OK.value());
 		response.setMessage("Product deleted successfully");
 		response.setData("Product with pid " + pid + " has been deleted");
