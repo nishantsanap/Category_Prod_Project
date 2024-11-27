@@ -30,12 +30,13 @@ public class CategoryController {
 //	public ResponseEntity<?> createCategory(@RequestBody Category category) {
 //		return categoryService.createCategory(category);
 //	}
-
+        // create a new category operations
 	@PostMapping("/create")
 	public ResponseEntity<?> createCategory(@RequestParam String name) {
 		return categoryService.createCategory(name);
 	}
-
+	
+        // Getting all category operations
 	@GetMapping("/all")
 	public ResponseEntity<ResponseStructure<Page<Category>>> getAllCategories(
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
@@ -44,17 +45,20 @@ public class CategoryController {
 		return ResponseEntity.ok(response);
 	}
 
+	// Getting category by passing Id operations
 	@GetMapping("/categories/{cid}")
 	public ResponseEntity<ResponseStructure<Category>> getCategoryByCid(@PathVariable Integer cid) {
 		return categoryService.getCategoryByCid(cid);
 	}
-
+	
+        //update category by id operations
 	@PutMapping("/categories/{cid}")
 	public ResponseEntity<ResponseStructure<Category>> updateCategoryByCid(@PathVariable Integer cid,
 			@RequestBody Category categoryDetails) {
 		return categoryService.updateCategoryByCid(cid, categoryDetails);
 	}
-
+	
+        // Delete category by id operations
 	@DeleteMapping("/categories/{cid}")
 	public ResponseEntity<ResponseStructure<String>> deleteCategoryByCid(@PathVariable Integer cid) {
 		return categoryService.deleteCategoryByCid(cid);
