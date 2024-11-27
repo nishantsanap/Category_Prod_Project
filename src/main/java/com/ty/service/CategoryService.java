@@ -40,10 +40,10 @@ public class CategoryService {
 //	    }
 
 	public ResponseEntity<ResponseStructure<Category>> createCategory(String name) {
-		
+		// Create object to hold the response
 		ResponseStructure<Category> rs = new ResponseStructure<>();
 
-		
+		// validate the user input
 		if (name == null || name.isEmpty()) {
 			rs.setStatusCode(HttpStatus.BAD_REQUEST.value());
 			rs.setMessage("Category name cannot be null or empty");
@@ -51,14 +51,14 @@ public class CategoryService {
 			return new ResponseEntity<>(rs, HttpStatus.BAD_REQUEST);
 		}
 
-		
+		// Create the category object
 		Category category = new Category();
 		category.setName(name);
 
 	
 		Category savedCategory = categoryRepository.save(category);
 
-		
+		//prepare the resp
 		rs.setStatusCode(HttpStatus.CREATED.value());
 		rs.setMessage("Category created successfully");
 		rs.setData(savedCategory);
@@ -81,7 +81,7 @@ public class CategoryService {
 	public ResponseEntity<ResponseStructure<Category>> getCategoryByCid(Integer cid) {
 		ResponseStructure<Category> rs = new ResponseStructure<>();
 
-		
+		// Fetch the category by using cid
 		Category category = categoryRepository.findById(cid).orElse(null);
 
 		if (category == null) {
@@ -99,11 +99,11 @@ public class CategoryService {
 		return new ResponseEntity<>(rs, HttpStatus.OK);
 	}
 
-	
+	//method to update operations by using cid
 	public ResponseEntity<ResponseStructure<Category>> updateCategoryByCid(Integer cid, Category categoryDetails) {
 		ResponseStructure<Category> rs = new ResponseStructure<>();
 
-		
+		// Check if category exists
 		Category existingCategory = categoryRepository.findById(cid).orElse(null);
 
 		if (existingCategory == null) {
@@ -129,11 +129,11 @@ public class CategoryService {
 		return new ResponseEntity<>(rs, HttpStatus.OK);
 	}
 
-
+        //method to delete operations by using cid
 	public ResponseEntity<ResponseStructure<String>> deleteCategoryByCid(Integer cid) {
 		ResponseStructure<String> rs = new ResponseStructure<>();
 
-	
+	        // Check if category exists
 		Category existingCategory = categoryRepository.findById(cid).orElse(null);
 
 		if (existingCategory == null) {
@@ -143,7 +143,7 @@ public class CategoryService {
 			return new ResponseEntity<>(rs, HttpStatus.NOT_FOUND);
 		}
 
-		
+		// delete category
 		categoryRepository.deleteById(cid);
 
 		
