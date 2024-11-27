@@ -20,7 +20,7 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer cid;
 
-	private String name; 
+	private String name; // Name of the category
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	@JsonIgnore 
 	private List<Products> products;
